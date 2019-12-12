@@ -20,14 +20,15 @@ function findById(id) {
 }
 
 function findSteps(schemeId) {
-  return('schemes')
-    .select('scheme.scheme_name', 'steps.step_number', 'step.instructions')
-    .join('steps.id', 'steps.scheme_id')
-    .where({ scheme_id: schemeId})
+  return db('schemes as sch')
+    .select('st.id', 'sch.scheme_name', 'st.step_number', 'st.instructions')
+    .join( 'steps as st', 'sch.id', '=', 'st.scheme_id') // join in steps. saying schemes.id and steps.scheme_id is where the tables are joined/connected
+    .where({ scheme_id: schemeId })
+    .orderBy('step_number');
 }
 
 function add(scheme) {
-  return db ('scheme')
+  return db ('schemes')
     .insert(scheme, 'id')
       .then(ids => {
         const [id] = ids;
@@ -50,7 +51,7 @@ function update(changes, id) {
 }
 
 function remove(id) {
-  db('schemes')
+  return db('schemes')
     .where({ id })
     .del();
 }
