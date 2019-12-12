@@ -19,11 +19,11 @@ function findById(id) {
     .first();
 }
 
-function findSteps(schemeId) {
-  return db('schemes as sch')
-    .select('st.id', 'sch.scheme_name', 'st.step_number', 'st.instructions')
-    .join( 'steps as st', 'sch.id', '=', 'st.scheme_id') // join in steps. saying schemes.id and steps.scheme_id is where the tables are joined/connected
-    .where({ scheme_id: schemeId })
+function findSteps(id) {
+  return db('schemes')
+    .select('steps.id', 'schemes.scheme_name', 'steps.step_number', 'steps.instructions')
+    .join( 'steps', 'schemes.id', '=', 'steps.scheme_id') // join in steps. saying schemes.id and steps.scheme_id is where the tables are joined/connected
+    .where({ scheme_id: id })
     .orderBy('step_number');
 }
 
